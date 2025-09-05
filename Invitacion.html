@@ -226,7 +226,7 @@
 
   // ===== Galería (URLs separadas por |) =====
   const imgsParam = get('imgs', '');
-  let images = [];
+ let images = [normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQSYNsD4AQlVRpPTZrxB8VIgAbfofZyd5v6vm2nm3lA3g_Q?width=2731&height=4096'),normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQqbeju716_Q5Maxz76rxm-Ablc6YplxT6JsygUcQaIpoU?width=2731&height=4096')];
   if(imgsParam){ images = imgsParam.split('|').map(s=>normalize(s.trim())).filter(Boolean); }
   if(!images.length){
     const def = normalize(get('imgFallback','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop'));
