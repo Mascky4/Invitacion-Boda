@@ -93,7 +93,7 @@
   <div class="bg"><img id="bg" src="https://1drv.ms/i/c/e4c59f235e07ddc5/IQQVZ9oIYah2SoqNZGcH7pfLAaEnSUWPAyphQZOLQ5duNns?width=7008&height=4672" alt="Fondo"/></div>
 
   <button id="audioToggle" class="audio-btn" aria-pressed="false" title="Silenciar/Activar sonido">🔈</button>
-  <audio id="bgm" preload="auto" loop playsinline>
+  <audio id="bgm" preload="auto" loop autoplay playsinline>
     <source id="bgmSrc" type="audio/mpeg">
   </audio>
   <main class="wrap">
@@ -221,12 +221,33 @@
   const playlist = get('playlist','https://open.spotify.com');
 
   // ===== Audio (puedes dejar una URL fija aquí) =====
-  const audioDefault = 'https://1drv.ms/u/c/e4c59f235e07ddc5/EV2GsDb6KwRApFBse79dMNgBxYTNEctx9hHOtIMFKr5BDg?e=PGvcXa';
+  const audioDefault = 'rt.mp3';
   const audioSrc = get('audio', audioDefault);
 
   // ===== Galería (URLs separadas por |) =====
   const imgsParam = get('imgs', '');
- let images = [normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQSYNsD4AQlVRpPTZrxB8VIgAbfofZyd5v6vm2nm3lA3g_Q?width=2731&height=4096'),normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQqbeju716_Q5Maxz76rxm-Ablc6YplxT6JsygUcQaIpoU?width=2731&height=4096')];
+  let images = [normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQqbeju716_Q5Maxz76rxm-Ablc6YplxT6JsygUcQaIpoU?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRWGp3zHa4XQIxpipzSJN9sAcfdFYl9kZNBlSkDltlGQ8g?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRTOc_OvcpOQJZHwxrQGqYUAe6Z2fK3DM4tzCi8M3s4p-Q?width=4672&height=7008'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQTSMq6ix3MNSqg12XNpPvDOAaeGWEonV72-eMv6w435snw?width=4250&height=6375'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQTYSSoM7aZxTZ8vz-ZzLKhWAXMDUhTrLIxCeH-gYjYTIBI?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRGK1dc7W1dQLJ86Qry-j-pAdDGuyMjU4NgWb-6m8ByuDU?width=4404&height=6606'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQVZ9oIYah2SoqNZGcH7pfLAaEnSUWPAyphQZOLQ5duNns?width=7008&height=4672'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQwOa2CmWp7QJBUelnGsVsnAXMd2fnoqdehIkznsGSqYiM?width=4386&height=6579'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRnOaf2EV8UQo2RAEvDeRHEARJnmsMjfWhD7aQRGsQZjhM?width=4672&height=7008'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQXm4njBUYHSogtdp8xYDDuAbM_fCWvj8NMvrYz6L4-nS4?width=4672&height=7008'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRRMYvysABfRIidR0eogsS3Ackr9Zp5du4aTPLs7IGI_7A?width=4672&height=7008'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQ3ESo4OZv-QJREsqx1Yx26ASppeRiQNUqUUBEvAcjnQbM?width=4452&height=6678'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQTEw1rETD8TQL-SqiQdyWhzAZFV5x91ivCmFgLoDwBfL7c?width=4211&height=6316'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQR63dFw7UJ0QbqIgoMpq_CUAW5AeVg71fABfctQiOpodPI?width=4550&height=6825'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQQVqFwCMBA-T6LvFOMZcbfsAUzzd-cJ5SzLa1Etb7yt6BQ?width=4614&height=6921'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQTXs2XVPu1CRb-vf8HBpC8xARnXHaRwP_EGTlK86eOoZos?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQRrGMEH4I_TR5JWurlc0FPvAUNfgNprgikuK8wfotxi7Cw?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQS1PAgEh_XpQal15J-I4HsyAaBnWfWitDWu9fcf4OFhq7E?width=2607&height=3910'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQTz3z4CJYZwSJ5z2lbL0D6vAWoIw32YF4_Q0LN9sZN80TY?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQSYNsD4AQlVRpPTZrxB8VIgAbfofZyd5v6vm2nm3lA3g_Q?width=2731&height=4096'),
+normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQSsV98C9ulTR5DUVA1TGKjmAZ5ymjy35sOIl2KDkGm28kY?width=2731&height=4096')
+];
   if(imgsParam){ images = imgsParam.split('|').map(s=>normalize(s.trim())).filter(Boolean); }
   if(!images.length){
     const def = normalize(get('imgFallback','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop'));
@@ -331,6 +352,7 @@
   const audioSrcEl = document.getElementById('bgmSrc');
   const audioBtn = document.getElementById('audioToggle');
   if(audioEl && audioBtn){
+    // Fuente final (parámetro URL > valor por defecto)
     let finalSrc = '';
     if(audioSrc){ finalSrc = normalize(audioSrc); }
     else if(audioDefault){ finalSrc = normalize(audioDefault); }
@@ -355,9 +377,10 @@
       }
     }
 
-    // Clic en botón: si está pausado intenta reproducir; si ya reproduce, alterna mute
+    // Clic en botón: si está pausado intenta reproducir con sonido; si ya reproduce, alterna mute
     audioBtn.addEventListener('click', function(){
       if(audioEl.paused){
+        audioEl.muted = false;
         audioEl.play().catch(function(){ /* bloqueo autoplay */ });
       } else {
         audioEl.muted = !audioEl.muted;
@@ -365,26 +388,34 @@
       updateBtn();
     });
 
-    // Estrategia: intenta reproducir en silencio y desbloquear con el primer gesto
-    function tryAutoplayMuted(){
+    // Intentar AUTOPLAY con sonido activo (si el navegador lo permite)
+    function tryAutoplayLoud(){
       if(!finalSrc) return;
-      audioEl.muted = true;
+      audioEl.muted = false;
       audioEl.play().then(function(){
         updateBtn();
-        const unlock = function(){ audioEl.muted = false; updateBtn(); window.removeEventListener('click', unlock); window.removeEventListener('touchstart', unlock); window.removeEventListener('keydown', unlock); };
-        window.addEventListener('click', unlock, {once:true});
-        window.addEventListener('touchstart', unlock, {once:true});
-        window.addEventListener('keydown', unlock, {once:true});
       }).catch(function(){
-        // Si ni siquiera en mute deja reproducir, reproduce al primer gesto
-        const starter = function(){ audioEl.play().finally(updateBtn); window.removeEventListener('click', starter); window.removeEventListener('touchstart', starter); window.removeEventListener('keydown', starter); };
-        window.addEventListener('click', starter, {once:true});
-        window.addEventListener('touchstart', starter, {once:true});
-        window.addEventListener('keydown', starter, {once:true});
+        // Si el navegador bloquea el autoplay, reproducimos en el primer gesto del usuario
+        const starter = function(){
+          audioEl.muted = false;
+          audioEl.play().finally(updateBtn);
+          ['click','touchstart','keydown','wheel','scroll','pointerdown'].forEach(function(ev){
+            window.removeEventListener(ev, starter);
+            document.removeEventListener(ev, starter);
+          });
+        };
+        ['click','touchstart','keydown','pointerdown'].forEach(function(ev){
+        window.addEventListener(ev, starter, {once:true});
+        document.addEventListener(ev, starter, {once:true});
+      });
+      ['wheel','scroll'].forEach(function(ev){
+        window.addEventListener(ev, starter, {once:true, passive:true});
+        document.addEventListener(ev, starter, {once:true, passive:true});
+      });
       });
     }
 
-    if(finalSrc) tryAutoplayMuted();
+    if(finalSrc) tryAutoplayLoud();
 
     ['play','pause','volumechange','canplay','canplaythrough','loadeddata','stalled','suspend','error','ended'].forEach(function(ev){
       audioEl.addEventListener(ev, updateBtn);
