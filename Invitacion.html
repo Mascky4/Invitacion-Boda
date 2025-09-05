@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invitación Boda — Alix & Sergio (1 archivo)</title>
+  <meta name="description" content="Landing de boda en un solo archivo HTML. Fondo sin difuminado, 1 sola columna con 80% de transparencia y una galería única con autoplay y controles. Imágenes por URL en la nube (OneDrive, Drive, Dropbox, etc.)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f0f0f;
+      --paper:#F3EEE8;             /* color base */
+      --paper-alpha: rgba(243,238,232,.8); /* 80% transparencia */
+      --ink:#6E4F3B;               /* marrón de textos / botones */
+      --ink-2:#b79a87;             /* marrón claro */
+      --shadow:0 14px 40px rgba(0,0,0,.28);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:#2c2c2c; background:var(--bg)}
+
+    /* Fondo sin difuminado */
+    .bg{position:fixed; inset:0; z-index:-2; overflow:hidden}
+    .bg img{width:100%; height:100%; object-fit:cover; filter:none; transform:none}
+    .bg::after{content:""; position:absolute; inset:0; background:transparent}
+
+    /* Contenedor: 1 sola columna */
+    .wrap{ width:min(760px, 94%); margin-inline:auto; padding:24px; }
+    .cards{ display:grid; grid-template-columns: minmax(320px, 560px); gap:22px; justify-content:center }
+
+    /* Tarjetas y rasgado */
+    .card{ background:var(--paper-alpha); border-radius: var(--radius); box-shadow:var(--shadow); overflow:hidden; position:relative }
+    .card-inner{ padding:24px 22px 28px }
+
+    /* Tipografías */
+    .script{ font-family:"Great Vibes", cursive; color:white; text-shadow:0 2px 10px rgba(0,0,0,.35) }
+    h1.names{ font-size: clamp(40px, 7.2vw, 68px); font-weight:400; line-height:1; margin:0 }
+    .caps{ font-family: "Cormorant Garamond", serif; text-transform: uppercase; letter-spacing:.18em; color:var(--ink); }
+    .kicker{ font-size:.88rem; opacity:.8 }
+    h2{ font-family:"Cormorant Garamond", serif; color:var(--ink); font-weight:600; margin: 0 0 10px }
+    p, li, small{ color:#574f49 }
+
+    /* Portada superior */
+    .cover{ position:relative; height: 58vh; min-height:380px; max-height:620px; }
+    .cover img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover }
+
+    /* Rasgado (torn) */
+    .tear{ position:absolute; left:0; width:100%; height:46px; pointer-events:none; }
+    .tear.top{ top:0; transform: translateY(-1px) }
+    .tear.bottom{ bottom:0; transform: translateY(1px) rotate(180deg) }
+    .tear path{ fill: var(--paper-alpha); }
+
+    /* Auxiliares */
+    .center{ text-align:center }
+    .muted{ color:#8a7f76 }
+
+    /* Cuenta regresiva */
+    .count{ display:flex; gap:10px; justify-content:center; margin:10px 0 16px }
+    .box{ background:#efe8e1; border:1px solid #e1d7cf; border-radius:12px; padding:10px 12px; min-width:68px }
+    .box strong{ display:block; font-size:1.4rem; color:#493526 }
+    .box span{ font-size:.78rem; color:#7b6a5f }
+
+    /* Botones */
+    .btn{ display:inline-block; background:var(--ink); color:#fff; padding:10px 14px; border-radius:999px; text-decoration:none; font-weight:600 }
+    .btn.ghost{ background:transparent; color:var(--ink); border:1px solid var(--ink) }
+
+    .block{ background:rgba(246,241,235,.9); border-radius:14px; padding:16px; border:1px solid #e6ddd4 }
+
+    /* Galería única */
+    .gallery{ margin: 18px 0 6px; position:relative }
+    .slides{ position:relative; display:flex; flex-wrap:nowrap; gap:12px; overflow-x:auto; overflow-y:hidden; scroll-behavior:smooth; padding:0; align-items:center; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory; overscroll-behavior:contain; overscroll-behavior-inline:contain; height: clamp(220px, 45vh, 520px); border:none; background:transparent; border-radius:0 }
+    .slide{ flex:0 0 auto; height: clamp(220px, 45vh, 520px); display:flex; align-items:center; justify-content:center; scroll-snap-align:center }
+    .slide.active{ display:block }
+    .slide img{ height:100%; width:auto; object-fit:contain; display:block }
+    .controls{ position:absolute; left:-40px; right:-40px; top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:space-between; padding:0; pointer-events:none; z-index:6 }
+    .ctrl{ pointer-events:auto; display:grid; place-items:center; width:42px; height:42px; border-radius: 50%; border:1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.25); backdrop-filter: blur(6px) }
+    .ctrl:hover{ background: rgba(0,0,0,.4) }
+    .dots{ display:none }
+    .dot{ width:8px; height:8px; border-radius:50%; background: rgba(255,255,255,.28); cursor:pointer; border:1px solid rgba(255,255,255,.2) }
+    .dot.active{ background: linear-gradient(180deg, #7cd7ff, #a17cf7) }
+
+    footer{ text-align:center; color:#bfb3a9; padding:24px 0 }
+    .slides:focus{ outline:none }
+    .audio-btn{ position:fixed; top:14px; right:14px; z-index:999; display:grid; place-items:center; width:44px; height:44px; border-radius:999px; border:1px solid rgba(0,0,0,.15); background:rgba(0,0,0,.35); backdrop-filter: blur(4px); color:#fff; font-size:18px; cursor:pointer }
+    .audio-btn.muted{ background:rgba(0,0,0,.18); opacity:.9 }
+  </style>
+</head>
+<body>
+  <!-- Fondo sin difuminado -->
+  <div class="bg"><img id="bg" src="https://1drv.ms/i/c/e4c59f235e07ddc5/IQQVZ9oIYah2SoqNZGcH7pfLAaEnSUWPAyphQZOLQ5duNns?width=7008&height=4672" alt="Fondo"/></div>
+
+  <button id="audioToggle" class="audio-btn" aria-pressed="false" title="Silenciar/Activar sonido">🔈</button>
+  <audio id="bgm" preload="auto" loop playsinline>
+    <source id="bgmSrc" type="audio/mpeg">
+  </audio>
+  <main class="wrap">
+    <section class="cards">
+
+      <!-- TARJETA ÚNICA (1 columna) -->
+      <article class="card">
+        <figure class="cover">
+          <img id="imgTop" src="https://1drv.ms/i/c/e4c59f235e07ddc5/IQSYNsD4AQlVRpPTZrxB8VIgAbfofZyd5v6vm2nm3lA3g_Q?width=2731&height=4096" alt="Pareja"/>
+          <svg class="tear bottom" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0,60 C80,120 180,0 300,70 C420,140 500,20 620,80 C740,140 860,30 980,90 C1090,145 1140,110 1200,140 L1200,200 L0,200 Z"/></svg>
+          <div style="position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:18px">
+            <div>
+              <div class="caps kicker" style="color:#fff">Nos casamos</div>
+              <h1 class="script names" id="names">Alix &amp; Sergio</h1>
+              <div class="caps" id="dateText" style="color:#fff; text-shadow:0 2px 10px rgba(0,0,0,.35)">15·11·2025</div>
+            </div>
+          </div>
+        </figure>
+
+        <div class="card-inner">
+          <div class="center">
+            <div class="caps" style="margin-top:6px; color:#8a6e59">Faltan:</div>
+            <div class="count" id="countdown" aria-live="polite">
+              <div class="box"><strong id="d">0</strong><span>días</span></div>
+              <div class="box"><strong id="h">0</strong><span>horas</span></div>
+              <div class="box"><strong id="m">0</strong><span>minutos</span></div>
+              <div class="box"><strong id="s">0</strong><span>segundos</span></div>
+            </div>
+            <p class="muted" id="teEsperamos">Te esperamos para celebrar nuestra boda</p>
+            <div class="block center" style="margin:10px 0 16px">
+              <div class="caps" id="dayBlock">Sábado <strong id="dayNum">15</strong> Noviembre</div>
+            </div>
+          </div>
+
+          <div style="display:grid; gap:14px">
+            <section>
+              <h2 class="center">Ceremonia</h2>
+              <p class="center" id="ceremonyTxt">20:30 h · Parroquia Nuestra Señora de Lourdes</p>
+              <p class="center muted" id="ceremonyAddr">Dirección de la iglesia</p>
+              <p class="center"><a id="ceremonyMap" class="btn" href="#" target="_blank" rel="noopener">Cómo llegar</a></p>
+            </section>
+
+            <section>
+              <h2 class="center">Fiesta</h2>
+              <p class="center" id="partyTxt">21:30 h · Salón Principal</p>
+              <p class="center muted" id="partyAddr">Dirección del salón</p>
+              <p class="center"><a id="partyMap" class="btn" href="#" target="_blank" rel="noopener">Cómo llegar</a></p>
+            </section>
+          </div>
+
+          <!-- APARTADO ÚNICO DE FOTOS: GALERÍA -->
+          <section id="galeria" class="gallery">
+            <div id="slides" class="slides" aria-live="polite"></div>
+            <div class="controls" aria-hidden="true">
+                <button class="ctrl" id="prev" aria-label="Anterior">&#10094;</button>
+                <button class="ctrl" id="next" aria-label="Siguiente">&#10095;</button>
+            </div>
+            <div id="dots" class="dots" role="tablist" aria-label="Indicadores de diapositivas"></div>
+            <p class="muted" style="text-align:center; font-size:.9rem; margin:6px 0 0">Tip: también puedes pasar imágenes por URL con <code>?imgs=URL1|URL2|URL3</code> y <code>&interval=4000</code>.</p>
+          </section>
+
+          <div class="block center" style="margin-top:14px">
+            <h2>Instagram</h2>
+            <p class="muted">No nos queremos perder de nada, etiqueta el instagram de la boda.</p>
+            <p><a id="ig" class="btn ghost" href="#" target="_blank" rel="noopener">@siquiero.arg</a></p>
+          </div>
+          <div class="block center" style="margin-top:14px">
+            <h2>Playlist</h2>
+            <p class="muted">Ayúdanos con la música recomendando esa canción que no puede faltar.</p>
+            <p><a id="playlist" class="btn" href="#" target="_blank" rel="noopener">Abrir playlist</a></p>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>Hecho con ♥ — 1 archivo HTML, imágenes por URL en la nube.</footer>
+
+  <script>
+(function(){
+  // ===== Utilidades =====
+  const P = new URLSearchParams(location.search);
+  const get = (k, d=null) => P.get(k) ? decodeURIComponent(P.get(k)) : d;
+
+  // Normaliza enlaces de OneDrive/SharePoint/Drive/Dropbox a entrega directa
+  function normalize(u){
+    try{
+      const url = new URL(u);
+      const h = url.hostname;
+      if (h.includes('1drv.ms') || h.includes('sharepoint.com') || h.includes('onedrive.live.com')) {
+        if(!url.searchParams.has('download')) url.searchParams.set('download','1');
+        url.pathname = url.pathname.replace('/redir','/download');
+        return url.toString();
+      }
+      if (h.includes('drive.google.com')){
+        const m = url.pathname.match(/\/file\/d\/([^/]+)/);
+        if(m && m[1]) return `https://drive.google.com/uc?id=${m[1]}`;
+      }
+      if (h.includes('dropbox.com')){
+        if(url.searchParams.has('dl')) url.searchParams.set('dl','1'); else url.search += (url.search?'&':'?')+'raw=1';
+        return url.toString();
+      }
+      return u;
+    }catch(e){ return u; }
+  }
+
+  // ===== Parámetros principales =====
+  const names = get('names', 'Alix & Sergio');
+  const date = get('date', '2025-11-15'); // YYYY-MM-DD
+  const time = get('time', '20:30');      // HH:mm 24h
+
+  const imgTop = get('imgTop');
+  const bg = get('bg');
+
+  const cerTxt = get('ceremony', '20:30 h · Parroquia Nuestra Señora de Lourdes');
+  const cerAddr = get('ceremonyAddr','C. Dirección de la iglesia');
+  const cerMap = get('ceremonyMap','#');
+
+  const parTxt = get('party','21:30 h · Salón Principal');
+  const parAddr = get('partyAddr','C. Dirección del salón');
+  const parMap = get('partyMap','#');
+
+  const instagram = get('ig','https://www.instagram.com/siquiero.arg');
+  const playlist = get('playlist','https://open.spotify.com');
+
+  // ===== Audio (puedes dejar una URL fija aquí) =====
+  const audioDefault = 'https://1drv.ms/u/c/e4c59f235e07ddc5/EV2GsDb6KwRApFBse79dMNgBxYTNEctx9hHOtIMFKr5BDg?e=PGvcXa';
+  const audioSrc = get('audio', audioDefault);
+
+  // ===== Galería (URLs separadas por |) =====
+  const imgsParam = get('imgs', '');
+  let images = [];
+  if(imgsParam){ images = imgsParam.split('|').map(s=>normalize(s.trim())).filter(Boolean); }
+  if(!images.length){
+    const def = normalize(get('imgFallback','https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop'));
+    images = [ normalize(imgTop||def), def, def ];
+  }
+  let interval = parseInt(get('interval','4000'),10); if(!isFinite(interval)||interval<1500) interval=4000;
+
+  // ===== Imágenes de portada y fondo =====
+  if(imgTop) document.getElementById('imgTop').src = normalize(imgTop);
+  if(bg) document.getElementById('bg').src = normalize(bg);
+
+  // ===== Nombres y fecha en portada =====
+  document.getElementById('names').textContent = names;
+  const eventAt = (function(){
+    const [Y,M,D] = (date||'2025-11-15').split('-').map(Number);
+    const [hh,mm] = (time||'00:00').split(':').map(Number);
+    return new Date(Y, M-1, D, hh||0, mm||0, 0);
+  })();
+  const dia = eventAt.getDate();
+  const mes = eventAt.toLocaleDateString('es-ES',{month:'long'});
+  const diaSemana = eventAt.toLocaleDateString('es-ES',{weekday:'long'});
+  document.getElementById('dayNum').textContent = dia;
+  document.getElementById('dayBlock').innerHTML = `${diaSemana.charAt(0).toUpperCase()+diaSemana.slice(1)} <strong>${dia}</strong> ${mes.charAt(0).toUpperCase()+mes.slice(1)}`;
+  const dd = eventAt.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}).replaceAll('/','·');
+  document.getElementById('dateText').textContent = dd;
+
+  // ===== Textos y links =====
+  document.getElementById('ceremonyTxt').textContent = cerTxt;
+  document.getElementById('ceremonyAddr').textContent = cerAddr;
+  document.getElementById('ceremonyMap').href = cerMap;
+  document.getElementById('partyTxt').textContent = parTxt;
+  document.getElementById('partyAddr').textContent = parAddr;
+  document.getElementById('partyMap').href = parMap;
+  document.getElementById('ig').href = instagram;
+  document.getElementById('playlist').href = playlist;
+
+  // ===== Cuenta regresiva =====
+  const $d = document.getElementById('d');
+  const $h = document.getElementById('h');
+  const $m = document.getElementById('m');
+  const $s = document.getElementById('s');
+  function tick(){
+    const now = new Date();
+    const diff = Math.max(0, eventAt - now);
+    const sec = Math.floor(diff/1000)%60;
+    const min = Math.floor(diff/1000/60)%60;
+    const hr  = Math.floor(diff/1000/60/60)%24;
+    const day = Math.floor(diff/1000/60/60/24);
+    $d.textContent = day; $h.textContent = hr; $m.textContent = min; $s.textContent = sec;
+  }
+  tick(); setInterval(tick, 1000);
+
+  // ===== Galería =====
+  const slidesEl = document.getElementById('slides');
+  const dotsEl = document.getElementById('dots');
+  let current = 0; let timer = null;
+
+  function buildGallery(urls){
+    while (slidesEl.firstChild) slidesEl.removeChild(slidesEl.firstChild);
+    dotsEl.innerHTML = '';
+    urls.forEach((src, i)=>{
+      const fig = document.createElement('figure'); fig.className = 'slide';
+      const img = document.createElement('img'); img.loading='lazy'; img.decoding='async'; img.alt = 'Imagen '+(i+1); img.src = src; fig.appendChild(img);
+      slidesEl.appendChild(fig);
+      const dot = document.createElement('button'); dot.className='dot'; dot.type='button'; dot.setAttribute('role','tab'); dot.addEventListener('click', ()=> goTo(i)); dotsEl.appendChild(dot);
+    });
+    current = 0; centerCurrent(); restartAuto();
+  }
+
+  function centerCurrent(){
+    const slides = slidesEl.querySelectorAll('.slide');
+    if(!slides.length) return;
+    const target = slides[current];
+    const centerLeft = target.offsetLeft - (slidesEl.clientWidth - target.clientWidth)/2;
+    slidesEl.scrollTo({left: Math.max(0, centerLeft), behavior: 'smooth'});
+  }
+
+  function goTo(idx){
+    const slides = slidesEl.querySelectorAll('.slide');
+    if(!slides.length) return;
+    current = (idx + slides.length) % slides.length;
+    centerCurrent();
+  }
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  function restartAuto(){
+    clearInterval(timer);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer = setInterval(next, interval);
+  }
+
+  document.getElementById('next').addEventListener('click', ()=>{ next(); restartAuto(); });
+  document.getElementById('prev').addEventListener('click', ()=>{ prev(); restartAuto(); });
+  slidesEl.addEventListener('mouseenter', ()=> clearInterval(timer));
+  slidesEl.addEventListener('mouseleave', restartAuto);
+
+  buildGallery(images);
+
+  // ===== Audio (melodía) =====
+  const audioEl = document.getElementById('bgm');
+  const audioSrcEl = document.getElementById('bgmSrc');
+  const audioBtn = document.getElementById('audioToggle');
+  if(audioEl && audioBtn){
+    let finalSrc = '';
+    if(audioSrc){ finalSrc = normalize(audioSrc); }
+    else if(audioDefault){ finalSrc = normalize(audioDefault); }
+
+    if(finalSrc){
+      audioSrcEl.src = finalSrc; // usa <source> con type=audio/mpeg
+      audioEl.load();
+    }
+
+    function updateBtn(){
+      if(audioEl.paused){
+        audioBtn.textContent = '▶️';
+        audioBtn.classList.add('muted');
+        audioBtn.setAttribute('aria-label','Reproducir música');
+        audioBtn.setAttribute('aria-pressed','false');
+      } else {
+        const isMuted = !!audioEl.muted || audioEl.volume === 0;
+        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+        audioBtn.classList.toggle('muted', isMuted);
+        audioBtn.setAttribute('aria-label', isMuted ? 'Activar sonido' : 'Silenciar sonido');
+        audioBtn.setAttribute('aria-pressed', String(!isMuted));
+      }
+    }
+
+    // Clic en botón: si está pausado intenta reproducir; si ya reproduce, alterna mute
+    audioBtn.addEventListener('click', function(){
+      if(audioEl.paused){
+        audioEl.play().catch(function(){ /* bloqueo autoplay */ });
+      } else {
+        audioEl.muted = !audioEl.muted;
+      }
+      updateBtn();
+    });
+
+    // Estrategia: intenta reproducir en silencio y desbloquear con el primer gesto
+    function tryAutoplayMuted(){
+      if(!finalSrc) return;
+      audioEl.muted = true;
+      audioEl.play().then(function(){
+        updateBtn();
+        const unlock = function(){ audioEl.muted = false; updateBtn(); window.removeEventListener('click', unlock); window.removeEventListener('touchstart', unlock); window.removeEventListener('keydown', unlock); };
+        window.addEventListener('click', unlock, {once:true});
+        window.addEventListener('touchstart', unlock, {once:true});
+        window.addEventListener('keydown', unlock, {once:true});
+      }).catch(function(){
+        // Si ni siquiera en mute deja reproducir, reproduce al primer gesto
+        const starter = function(){ audioEl.play().finally(updateBtn); window.removeEventListener('click', starter); window.removeEventListener('touchstart', starter); window.removeEventListener('keydown', starter); };
+        window.addEventListener('click', starter, {once:true});
+        window.addEventListener('touchstart', starter, {once:true});
+        window.addEventListener('keydown', starter, {once:true});
+      });
+    }
+
+    if(finalSrc) tryAutoplayMuted();
+
+    ['play','pause','volumechange','canplay','canplaythrough','loadeddata','stalled','suspend','error','ended'].forEach(function(ev){
+      audioEl.addEventListener(ev, updateBtn);
+    });
+
+    updateBtn();
+  }
+})();
+</script>
