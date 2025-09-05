@@ -132,15 +132,22 @@
 
           <div style="display:grid; gap:14px">
             <section>
-              <h2 class="center">Ceremonia</h2>
-              <p class="center" id="ceremonyTxt">20:30 h · Parroquia Nuestra Señora de Lourdes</p>
+              <h2 class="center">Civil</h2>
+              <p class="center" id="ceremonyTxt">18:00 h · Parroquia Nuestra Señora de Lourdes</p>
               <p class="center muted" id="ceremonyAddr">Dirección de la iglesia</p>
-              <p class="center"><a id="ceremonyMap" class="btn" href="https://maps.app.goo.gl/xedd1DKYqzDPoT4y6" target="https://maps.app.goo.gl/xedd1DKYqzDPoT4y6" rel="noopener">Cómo llegar</a></p>
+              
+            </section>
+
+            <section>
+              <h2 class="center">Ceremonia</h2>
+              <p class="center" id="ceremonyTxt">19:00 h · Parroquia Nuestra Señora de Lourdes</p>
+              <p class="center muted" id="ceremonyAddr">Dirección de la iglesia</p>
+              
             </section>
 
             <section>
               <h2 class="center">Fiesta</h2>
-              <p class="center" id="partyTxt">21:30 h · Salón Principal</p>
+              <p class="center" id="partyTxt">21:00 h · Salón Principal</p>
               <p class="center muted" id="partyAddr">Dirección del salón</p>
               <p class="center"><a id="partyMap" class="btn" href="https://maps.app.goo.gl/xedd1DKYqzDPoT4y6" target="https://maps.app.goo.gl/xedd1DKYqzDPoT4y6" rel="noopener">Cómo llegar</a></p>
             </section>
@@ -213,11 +220,11 @@
 
   const cerTxt = get('ceremony', '20:30 h · Parroquia Nuestra Señora de Lourdes');
   const cerAddr = get('ceremonyAddr','C. Dirección de la iglesia');
-  const cerMap = get('ceremonyMap','#');
+
 
   const parTxt = get('party','21:30 h · Salón Principal');
   const parAddr = get('partyAddr','C. Dirección del salón');
-  const parMap = get('partyMap','#');
+  const parMap = get('partyMap','https://maps.app.goo.gl/xedd1DKYqzDPoT4y6');
 
   const instagram = get('ig','https://www.instagram.com/siquiero.arg');
   const playlist = get('playlist','https://open.spotify.com');
@@ -279,7 +286,7 @@ normalize('https://1drv.ms/i/c/e4c59f235e07ddc5/IQSsV98C9ulTR5DUVA1TGKjmAZ5ymjy3
   // ===== Textos y links =====
   document.getElementById('ceremonyTxt').textContent = cerTxt;
   document.getElementById('ceremonyAddr').textContent = cerAddr;
-  document.getElementById('ceremonyMap').href = cerMap;
+
   document.getElementById('partyTxt').textContent = parTxt;
   document.getElementById('partyAddr').textContent = parAddr;
   document.getElementById('partyMap').href = parMap;
